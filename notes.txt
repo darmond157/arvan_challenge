@@ -1,0 +1,4 @@
+rabbitmq
+fastify
+postgres
+testing
