@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "dev": "nodemon index.js",
+    "prod": "node index.js",
+    "test": "jest"
+  },
   "dependencies": {
     "dotenv": "^16.4.5",
     "fastify": "^4.28.0",

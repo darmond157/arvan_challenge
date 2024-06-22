@@ -2,3 +2,6 @@ rabbitmq
 fastify
 postgres
 testing
+swagger
+readme
+ER database model in readme as picture
