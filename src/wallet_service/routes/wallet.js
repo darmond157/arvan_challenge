@@ -1,9 +1,9 @@
 let fastify;
 
-const getWallet = require("../controllers/getWallet.js")(fastify);
-const createWallet = require("../controllers/createWallet.js")(fastify);
-const updateWallet = require("../controllers/updateWallet.js")(fastify);
-const deleteWallet = require("../controllers/deleteWallet.js")(fastify);
+const getWallet = require("../controllers/wallet/getWallet.js")(fastify);
+const createWallet = require("../controllers/wallet/createWallet.js")(fastify);
+const updateWallet = require("../controllers/wallet/updateWallet.js")(fastify);
+const deleteWallet = require("../controllers/wallet/deleteWallet.js")(fastify);
 
 module.exports = (fastifyInstance) => {
 	fastify = fastifyInstance;
