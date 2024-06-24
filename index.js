@@ -4,6 +4,7 @@ const fastify = require("fastify")({ logger: true });
 require("./src/plugins/postgres.js")(fastify)
 	.then(() => {
 		require("./src/plugins/rabbitmq.js")(fastify);
+		require("./src/plugins/redis.js")(fastify);
 	})
 	.then(() => {
 		require("./src/services/discount/main.js")(fastify);

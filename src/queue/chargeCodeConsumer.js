@@ -3,7 +3,7 @@ module.exports = (fastify) => {
 	channel.consume("charge-code-Q", (msg) => {
 		let consumedMessage = JSON.parse(msg.content.toString());
 		console.log(consumedMessage);
-		channel.ack(consumedMessage);
+		// channel.ack(consumedMessage);
 
 		//TODO:
 		//create transaction

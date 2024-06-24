@@ -1,31 +1,30 @@
-const { createClient } = require("redis");
-
 module.exports = (fastify) => {
-	fastify.get("/applyCode", async (req, res) => {
+	fastify.post("/applyCode", async (req, res) => {
 		const phoneNumber = req.body?.phoneNumber;
 		const code = req.body?.code;
 
 		if (!phoneNumber || !code) return res.send("phoneNumber or code is empty!");
 
-		const redisClient = createClient({
-			url: process.env.REDIS_URL,
-		});
-
-		const userUsedCodeResult = await redisClient.SISMEMBER(code, phoneNumber);
+		const userUsedCodeResult = await fastify.redis.sismember(code, phoneNumber);
 
 		if (userUsedCodeResult) return res.send("you have used this code before!");
 
-		await fastify.pg.query(
+		const codeCountResult = await fastify.pg.query(
 			"select count from chargeCodes where code=$1",
-			[code],
-			(err, result) => {
-				if (err) return res.send(err);
-				if (!redisClient.EXISTS(code)) redisClient.SET(code, result);
-			}
+			[code]
 		);
 
-		if (redisClient.GET(code) == 0)
-			return res.send("Code is not valid anymore");
+		const doesCodeExistsInRedis = await fastify.redis.exists(code);
+		if (!doesCodeExistsInRedis) {
+			if (codeCountResult.rowCount != 0)
+				await fastify.redis.set(code, codeCountResult);
+
+			return res.send("The provided code does not exists!");
+		}
+
+		await fastify.redis.set(code,200)
+		const isAnyAmountOfTheCodeLeft = await fastify.redis.get(code);
+		if (!isAnyAmountOfTheCodeLeft) return res.send("Code is not valid anymore");
 
 		const channel = fastify.amqp.channel;
 		await channel.sendToQueue(
