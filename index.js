@@ -1,13 +1,18 @@
+require("dotenv").config();
 const fastify = require("fastify")({ logger: true });
 
-// Logic
+try {
+	require("./src/plugins/mysql.js")(fastify);
+	require("./src/plugins/rabbitmq.js")(fastify);
+	require("./src/plugins/swagger.js")(fastify);
+} catch (e) {
+	console.log("error initializing external plugins:", e);
+}
 
-// fastify.register(require("@fastify/autoload"), {
-// 	dir: path.join(__dirname, 'routes')
-//   })
-//   await fastify.ready()
-//   fastify.swagger()
+require("./src/services/discount/main.js")(fastify);
+require("./src/services/wallet/main.js")(fastify);
 
-fastify.listen({ port: 3000, host: "0.0.0.0" }, (err) => {
+
+fastify.listen({ port: process.env.PORT, host: process.env.HOST }, (err) => {
 	if (err) console.log(err);
 });

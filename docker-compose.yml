@@ -1,0 +1,53 @@
+version: "3.2"
+services:
+
+  arvan_challenge:
+    build: .
+    container_name: 'arvan_challenge_container'
+    ports:
+      - 3000:3000
+    networks:
+      - arvan_challenge_network
+    environment:
+      - RABBITMQ_URL=amqp://root:root@rabbitmq:5672
+      - MYSQL_URL=mysql://root:root@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+      - database
+      - redis
+
+  rabbitmq:
+    image: docker.arvancloud.ir/rabbitmq:latest
+    container_name: 'rabbit_container'
+    environment:
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=root
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - arvan_challenge_network
+
+  mysql:
+    image: docker.arvancloud.ir/mysql:8.4
+    container_name: mysql_container
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - arvan_challenge_network
+
+  redis:
+    image: docker.arvancloud.ir/redis:latest
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=secret
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=1
+    networks:
+      - arvan_challenge_network
+  
+networks:
+  arvan_challenge_network:
