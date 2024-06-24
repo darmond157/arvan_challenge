@@ -3,3 +3,6 @@
 // 	"dead-letters-Q",
 // 	Buffer.from(JSON.stringify(consumedMessage))
 // );
+
+module.exports = (fastify) => {};
+

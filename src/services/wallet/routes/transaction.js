@@ -9,7 +9,6 @@ const createTransaction =
 module.exports = (fastifyInstance) => {
 	fastify = fastifyInstance;
 
-	fastify.get("/transactions", getTransaction.getAllTransactions);
-	fastify.get("/transaction/:phoneNumber", getTransaction.getSingleTransaction);
+	fastify.get("/transaction/:phoneNumber", getTransaction);
 	fastify.post("/transaction", createTransaction);
 };
