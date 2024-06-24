@@ -1,22 +1,26 @@
+CREATE DATABASE arvan_challenge;
+
+\c arvan_challenge;
+
 CREATE TABLE users(
-    id BIGSERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     phoneNumber VARCHAR(20) UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP DEFAULT NULL
 );
 
 CREATE TABLE wallets(
-    id BIGSERIAL PRIMARY KEY,
-    userId BIGSERIAL,
+    id SERIAL PRIMARY KEY,
+    userId INTEGER,
     balance INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP DEFAULT NULL,
-    FOREIGN KEY userId REFERENCES users(id)
+    FOREIGN KEY (userId) REFERENCES users(id)
 );
 
 CREATE TABLE chargeCodes(
-    id BIGSERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     code VARCHAR(1000) UNIQUE NOT NULL,
     price INT NOT NULL,
     count INT NOT NULL,
@@ -25,7 +29,7 @@ CREATE TABLE chargeCodes(
 );
 
 CREATE TABLE discountCodes(
-    id BIGSERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     code VARCHAR(1000) UNIQUE NOT NULL,
     percent INT NOT NULL,
     count INT NOT NULL,
@@ -34,15 +38,15 @@ CREATE TABLE discountCodes(
 );
 
 CREATE TABLE transactions(
-    id BIGSERIAL PRIMARY KEY,
-    userId BIGSERIAL,
-    walletId BIGSERIAL,
-    discountCodeId BIGSERIAL,
-    chargeCodeId BIGSERIAL,
+    id SERIAL PRIMARY KEY,
+    userId INT,
+    walletId INT,
+    discountCodeId INT,
+    chargeCodeId INT,
     value INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userId) REFERENCES users(id),
     FOREIGN KEY (walletId) REFERENCES wallets(id),
     FOREIGN KEY (discountCodeId) REFERENCES discountCodes(id),
-    FOREIGN KEY (chargeCodeId) REFERENCES chargeCodes(id),
+    FOREIGN KEY (chargeCodeId) REFERENCES chargeCodes(id)
 );

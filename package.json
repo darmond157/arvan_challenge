@@ -5,9 +5,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@fastify/autoload": "^5.10.0",
-    "@fastify/mysql": "^4.3.0",
-    "@fastify/swagger": "^8.14.0",
+    "@fastify/postgres": "^5.2.2",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.0",
     "fastify-amqp-async": "^1.0.1",

@@ -4,7 +4,7 @@ module.exports = (fastify) => {
 
 		fastify.pg.query(getSelectWalletQuery(), [walletId], (err, result) => {
 			res.send("Please Try Again ..." || result);
-			console.log(err);
+			console.log(result);
 		});
 	};
 };
