@@ -1,34 +1,48 @@
-CREATE TABLE wallets(
+CREATE TABLE users(
     id BIGSERIAL PRIMARY KEY,
     phoneNumber VARCHAR(20) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL
+);
+
+CREATE TABLE wallets(
+    id BIGSERIAL PRIMARY KEY,
+    userId BIGSERIAL,
     balance INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    deleted_at TIMESTAMP DEFAULT NULL,
+    FOREIGN KEY userId REFERENCES users(id)
 );
 
 CREATE TABLE chargeCodes(
     id BIGSERIAL PRIMARY KEY,
     code VARCHAR(1000) UNIQUE NOT NULL,
-    price VARCHAR(1000) NOT NULL,
-    count VARCHAR(1000) NOT NULL,
+    price INT NOT NULL,
+    count INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL
 );
 
 CREATE TABLE discountCodes(
     id BIGSERIAL PRIMARY KEY,
     code VARCHAR(1000) UNIQUE NOT NULL,
-    price VARCHAR(1000) NOT NULL,
-    count VARCHAR(1000) NOT NULL,
+    percent INT NOT NULL,
+    count INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL
 );
 
 CREATE TABLE transactions(
     id BIGSERIAL PRIMARY KEY,
-    phoneNumber VARCHAR(20) NOT NULL,
-    code VARCHAR(1000),
-    value VARCHAR(1000),
+    userId BIGSERIAL,
+    walletId BIGSERIAL,
+    discountCodeId BIGSERIAL,
+    chargeCodeId BIGSERIAL,
+    value INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (phoneNumber) REFERENCES wallets(phoneNumber),
-    FOREIGN KEY (code) REFERENCES codes(code),
+    FOREIGN KEY (userId) REFERENCES users(id),
+    FOREIGN KEY (walletId) REFERENCES wallets(id),
+    FOREIGN KEY (discountCodeId) REFERENCES discountCodes(id),
+    FOREIGN KEY (chargeCodeId) REFERENCES chargeCodes(id),
 );
