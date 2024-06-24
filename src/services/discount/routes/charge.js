@@ -31,7 +31,7 @@ module.exports = (fastify) => {
 		const channel = fastify.amqp.channel;
 
 		await channel.sendToQueue(
-			"charge-code-Q",
+			"charge-codes-Q",
 			Buffer.from(JSON.stringify({ phoneNumber, code }))
 		);
 	});
