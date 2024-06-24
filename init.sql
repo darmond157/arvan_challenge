@@ -50,3 +50,7 @@ CREATE TABLE transactions(
     FOREIGN KEY (discountCodeId) REFERENCES discountCodes(id),
     FOREIGN KEY (chargeCodeId) REFERENCES chargeCodes(id)
 );
+
+
+insert into users (phoneNumber) values ('123');
+insert into wallets (userId,balance) values (1,3000);
