@@ -1,5 +1,3 @@
-rabbitmq
-fastify
 postgres
 testing
 swagger
