@@ -1,10 +1,18 @@
 module.exports = (fastify) => {
-	const getTransaction = require("../controllers/transaction/getTransaction.js")(
-		fastify
-	);
-	const createTransaction =
-		require("../controllers/transaction/createTransaction.js")(fastify);
-	
-	fastify.get("/transaction/:phoneNumber", getTransaction);
-	fastify.post("/transaction", createTransaction);
+	fastify.get("/transaction/:phoneNumber", (req, res) => {
+		const transactionId = req.params.id;
+
+		fastify.pg.query(
+			getSelectTransactionQuery(),
+			[transactionId],
+			(err, result) => {
+				res.send("Please Try Again ..." || result);
+				console.log(err);
+			}
+		);
+	});
 };
+
+function getSelectTransactionQuery() {
+	return "SELECT * FROM wallets WHERE id=$1";
+}
