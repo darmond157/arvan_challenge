@@ -6,8 +6,3 @@ module.exports = (fastify) => {
 		// channel.ack(consumedMessage);
 	});
 };
-
-// await channel.sendToQueue(
-// 	"dead-letters-Q",
-// 	Buffer.from(JSON.stringify(consumedMessage))
-// );
