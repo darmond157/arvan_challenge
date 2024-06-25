@@ -22,7 +22,7 @@ CREATE TABLE wallets(
 CREATE TABLE chargeCodes(
     id SERIAL PRIMARY KEY,
     code VARCHAR(1000) UNIQUE NOT NULL,
-    price INT NOT NULL,
+    value INT NOT NULL,
     count INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP DEFAULT NULL
@@ -31,7 +31,7 @@ CREATE TABLE chargeCodes(
 CREATE TABLE discountCodes(
     id SERIAL PRIMARY KEY,
     code VARCHAR(1000) UNIQUE NOT NULL,
-    percent INT NOT NULL,
+    value INT NOT NULL,
     count INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP DEFAULT NULL
@@ -39,11 +39,11 @@ CREATE TABLE discountCodes(
 
 CREATE TABLE transactions(
     id SERIAL PRIMARY KEY,
-    userId INT,
-    walletId INT,
+    userId INT NOT NULL,
+    walletId INT NOT NULL,
     discountCodeId INT,
     chargeCodeId INT,
-    value INT,
+    value INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userId) REFERENCES users(id),
     FOREIGN KEY (walletId) REFERENCES wallets(id),
@@ -62,6 +62,6 @@ values
     (1, 3000);
 
 insert into
-    chargeCodes (code, price, count)
+    chargeCodes (code, value, count)
 values
     ("asdf", 10, 1000);

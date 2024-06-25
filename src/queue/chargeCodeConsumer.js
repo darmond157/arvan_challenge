@@ -1,18 +1,27 @@
+const {
+	parseQueueMessage,
+	getChargeCodeDetails,
+	hasUserUsedCodeBefore,
+	createNewTransaction,
+	updateUserBalance,
+	addUserToRedis,
+	removeMessageFromChannel,
+} = require("../utils.js");
+
 module.exports = (fastify) => {
 	const channel = fastify.amqp.channel;
 
 	channel.consume("charge-codes-Q", async (message) => {
-		const { phoneNumber, code } = JSON.parse(message.content.toString());
+		const { code, phoneNumber, walletId, userId } = parseQueueMessage(message);
 
-		const userUsedCodeResult = await fastify.redis.sismember(code, phoneNumber);
-		if (userUsedCodeResult)
+		if (hasUserUsedCodeBefore(fastify, code, phoneNumber))
 			return console.log("The code has been used before!");
 
-		channel.ack(message);
-	});
+		const { chargeCodeId, value } = getChargeCodeDetails(fastify, code);
+		createNewTransaction(fastify, chargeCodeId, value, walletId, userId);
+		updateUserBalance(wholeData, codeValue);
+		addUserToRedis(wholeData);
 
-	//TODO:
-	//create transaction
-	//update user balance
-	//decrease code count
+		removeMessageFromChannel(channel, message);
+	});
 };

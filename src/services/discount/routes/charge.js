@@ -25,8 +25,8 @@ module.exports = (fastify) => {
 
 		let dataToSendToQueue;
 		if (doesUserExists(wholeArguments)) {
-			if (hasUserUsedCodeBefore(wholeArguments))
-				return res.send("you have used this code before!");
+			// if (hasUserUsedCodeBefore(wholeArguments))
+			// 	return res.send("you have used this code before!");
 
 			const { userId, walletId } = getUserIdAndWalletId(wholeArguments);
 			dataToSendToQueue = { userId, walletId, phoneNumber, code };

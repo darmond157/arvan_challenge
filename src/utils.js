@@ -1,5 +1,4 @@
-
-export async function createNewUserAndWallet({ fastify, phoneNumber }) {
+async function createNewUserAndWallet({ fastify, phoneNumber }) {
 	const createNewUserQueryResult = await fastify.pg.query(
 		"insert into users (phoneNumber) values ($1) returning id",
 		[phoneNumber]
@@ -15,7 +14,7 @@ export async function createNewUserAndWallet({ fastify, phoneNumber }) {
 	return { walletId, userId };
 }
 
-export async function getUserIdAndWalletId({ fastify, phoneNumber }) {
+async function getUserIdAndWalletId({ fastify, phoneNumber }) {
 	const selectUserQueryResult = await fastify.pg.query(
 		"select id from users where phoneNumber=$1",
 		[phoneNumber]
@@ -31,11 +30,11 @@ export async function getUserIdAndWalletId({ fastify, phoneNumber }) {
 	return { userId, walletId };
 }
 
-export async function hasUserUsedCodeBefore({ fastify, code, phoneNumber }) {
+async function hasUserUsedCodeBefore(fastify, code, phoneNumber) {
 	return (await fastify.redis.sismember(code, phoneNumber)) != 0 ? true : false;
 }
 
-export async function doesUserExists({ fastify, phoneNumber }) {
+async function doesUserExists({ fastify, phoneNumber }) {
 	const result = await fastify.pg.query(
 		"select * from users where phoneNumber=$1",
 		[phoneNumber]
@@ -43,11 +42,11 @@ export async function doesUserExists({ fastify, phoneNumber }) {
 	return result.rowCount != 0 ? true : false;
 }
 
-export function isFieldsProvided({ phoneNumber, code }) {
+function isFieldsProvided({ phoneNumber, code }) {
 	return phoneNumber && code;
 }
 
-export async function doesCodeExistsInDb({ fastify, code }) {
+async function doesCodeExistsInDb({ fastify, code }) {
 	const result = await fastify.pg.query(
 		"select * from chargeCodes where code=$1",
 		[code]
@@ -55,14 +54,65 @@ export async function doesCodeExistsInDb({ fastify, code }) {
 	return result.rowCount;
 }
 
-export async function getNumberOfCodeUsers({ fastify, code }) {
+async function getNumberOfCodeUsers({ fastify, code }) {
 	await fastify.redis.scard(code);
 }
 
-export async function sendDataToChargeCodesQueue(fastify, data) {
+async function sendDataToChargeCodesQueue(fastify, data) {
 	const channel = fastify.amqp.channel;
 	await channel.sendToQueue(
 		"charge-codes-Q",
 		Buffer.from(JSON.stringify(data))
 	);
 }
+
+function parseQueueMessage(message) {
+	return JSON.parse(message.content.toString());
+}
+
+function removeMessageFromChannel(channel, message) {
+	channel.ack(message);
+}
+
+async function getChargeCodeDetails(fastify, code) {
+	const result = await fastify.pg.query(
+		"select id as chargeCodeId,value from chargeCodes where code=$1",
+		[code]
+	);
+	return {
+		chargeCodeId: result.rows[0].chargeCodeId,
+		value: result.rows[0].value,
+	};
+}
+
+async function createNewTransaction(
+	fastify,
+	chargeCodeId,
+	value,
+	walletId,
+	userId
+) {
+	await fastify.pg.query(
+		"insert into transactions (userId,walletId,chargeCodeId,value) values ($1,$2,$3,$4)",
+		[userId, walletId, chargeCodeId, value]
+	);
+}
+async function updateUserBalance(wholeData, codeValue) {}
+async function addUserToRedis(wholeData) {}
+
+module.exports = {
+	createNewUserAndWallet,
+	getUserIdAndWalletId,
+	hasUserUsedCodeBefore,
+	doesUserExists,
+	isFieldsProvided,
+	doesCodeExistsInDb,
+	getNumberOfCodeUsers,
+	sendDataToChargeCodesQueue,
+	parseQueueMessage,
+	removeMessageFromChannel,
+	getChargeCodeDetails,
+	createNewTransaction,
+	updateUserBalance,
+	addUserToRedis,
+};
