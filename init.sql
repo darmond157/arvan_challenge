@@ -1,6 +1,6 @@
 CREATE DATABASE arvan_challenge;
 
-\c arvan_challenge;
+\ c arvan_challenge;
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
@@ -51,6 +51,17 @@ CREATE TABLE transactions(
     FOREIGN KEY (chargeCodeId) REFERENCES chargeCodes(id)
 );
 
+insert into
+    users (phoneNumber)
+values
+    ('123');
 
-insert into users (phoneNumber) values ('123');
-insert into wallets (userId,balance) values (1,3000);
+insert into
+    wallets (userId, balance)
+values
+    (1, 3000);
+
+insert into
+    chargeCodes (code, price, count)
+values
+    ("asdf", 10, 1000);
