@@ -85,20 +85,27 @@ async function getChargeCodeDetails(fastify, code) {
 	};
 }
 
-async function createNewTransaction(
+async function createNewTransaction({
 	fastify,
 	chargeCodeId,
 	value,
 	walletId,
-	userId
-) {
+	userId,
+}) {
 	await fastify.pg.query(
 		"insert into transactions (userId,walletId,chargeCodeId,value) values ($1,$2,$3,$4)",
 		[userId, walletId, chargeCodeId, value]
 	);
 }
-async function updateUserBalance(wholeData, codeValue) {}
-async function addUserToRedis(wholeData) {}
+async function updateUserBalance({ fastify, walletId, value }) {
+	await fastify.pg.query(
+		"update wallets set balance=balance+$1 where walletId=$2",
+		[value, walletId]
+	);
+}
+async function addUserToRedis({ fastify, code, phoneNumber }) {
+	await fastify.redis.sadd(code, phoneNumber);
+}
 
 module.exports = {
 	createNewUserAndWallet,

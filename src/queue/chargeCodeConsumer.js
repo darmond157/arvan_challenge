@@ -17,10 +17,22 @@ module.exports = (fastify) => {
 		if (hasUserUsedCodeBefore(fastify, code, phoneNumber))
 			return console.log("The code has been used before!");
 
-		const { chargeCodeId, value } = getChargeCodeDetails(fastify, code);
-		createNewTransaction(fastify, chargeCodeId, value, walletId, userId);
-		updateUserBalance(wholeData, codeValue);
-		addUserToRedis(wholeData);
+		if (
+			getNumberOfCodeUsers(wholeArguments) == doesCodeExistsInDb(wholeArguments)
+		)
+			return console.log("Code is not valid anymore!");
+
+		const wholeDataObject = {
+			code,
+			phoneNumber,
+			walletId,
+			userId,
+			...getChargeCodeDetails(fastify, code),
+		};
+
+		createNewTransaction(wholeDataObject);
+		updateUserBalance(wholeDataObject);
+		addUserToRedis(wholeDataObject);
 
 		removeMessageFromChannel(channel, message);
 	});
