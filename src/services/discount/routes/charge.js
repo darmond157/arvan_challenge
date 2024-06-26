@@ -7,12 +7,16 @@ const {
 	doesCodeExistsInDb,
 	getNumberOfCodeUsers,
 	sendDataToChargeCodesQueue,
+	checkPhoneNumberFormat,
 } = require("../../../utils.js");
 
 module.exports = (fastify) => {
 	fastify.post("/applyCode", async (req, res) => {
 		const { phoneNumber, code } = req.body;
 		const wholeArguments = { phoneNumber, code, fastify };
+
+		if (!checkPhoneNumberFormat(phoneNumber))
+			return res.send("phoneNumber is invalid!");
 
 		if (!isFieldsProvided(wholeArguments))
 			return res.send("phoneNumber or code is empty!");
@@ -36,5 +40,7 @@ module.exports = (fastify) => {
 		}
 
 		await sendDataToChargeCodesQueue(fastify, dataToSendToQueue);
+
+		return res.send("your process has been started ...");
 	});
 };

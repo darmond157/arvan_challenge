@@ -1,6 +1,6 @@
 CREATE DATABASE arvan_challenge;
 
-\ c arvan_challenge;
+\c arvan_challenge;
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
@@ -64,4 +64,4 @@ values
 insert into
     chargeCodes (code, value, count)
 values
-    ("asdf", 10, 1000);
+    ('test1', 10, 1000);

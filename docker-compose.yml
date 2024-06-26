@@ -8,9 +8,12 @@ services:
     networks:
       - arvan_challenge_network
     environment:
+      - PORT=3000
+      - HOST=0.0.0.0
       - RABBITMQ_URL=amqp://root:root@rabbitmq:5672
-      - POSTGRES_URL=postgres://postgres@postgres/arvan_challenge
+      - POSTGRES_URL=postgres://postgres:secret@postgres/arvan_challenge
       - REDIS_URL=redis://default:secret@redis:6379
+      - LOGGER=true
     depends_on:
       - rabbitmq
       - database

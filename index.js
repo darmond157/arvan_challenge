@@ -1,5 +1,5 @@
 require("dotenv").config();
-const fastify = require("fastify")();
+const fastify = require("fastify")({ logger: process.env.LOGGER });
 
 require("./src/plugins/rabbitmq.js")(fastify)
 	.then(() => {

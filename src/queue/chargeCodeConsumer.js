@@ -15,6 +15,7 @@ module.exports = (fastify) => {
 
 	channel.consume("charge-codes-Q", async (message) => {
 		const { code, phoneNumber, walletId, userId } = parseQueueMessage(message);
+		const { chargeCodeId, value } = await getChargeCodeDetails(fastify, code);
 
 		const wholeDataObject = {
 			fastify,
@@ -22,7 +23,8 @@ module.exports = (fastify) => {
 			phoneNumber,
 			walletId,
 			userId,
-			...getChargeCodeDetails(fastify, code),
+			chargeCodeId,
+			value,
 		};
 
 		if (await hasUserUsedCodeBefore(fastify, code, phoneNumber))

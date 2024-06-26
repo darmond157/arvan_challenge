@@ -6,7 +6,7 @@ async function createNewUserAndWallet({ fastify, phoneNumber }) {
 	const userId = createNewUserQueryResult.rows[0].id;
 
 	const createNewWalletQueryResult = await fastify.pg.query(
-		"insert into users (userId,balance) values ($1,0) returning id",
+		"insert into wallets (userId,balance) values ($1,0) returning id",
 		[userId]
 	);
 	const walletId = createNewWalletQueryResult.rows[0].id;
@@ -81,7 +81,7 @@ async function getChargeCodeDetails(fastify, code) {
 		[code]
 	);
 	return {
-		chargeCodeId: result.rows[0].chargeCodeId,
+		chargeCodeId: result.rows[0].chargecodeid,
 		value: result.rows[0].value,
 	};
 }
@@ -100,12 +100,16 @@ async function createNewTransaction({
 }
 async function updateUserBalance({ fastify, walletId, value }) {
 	await fastify.pg.query(
-		"update wallets set balance=balance+$1 where walletId=$2",
+		"update wallets set balance=balance+$1 where id=$2",
 		[value, walletId]
 	);
 }
 async function addUserToRedis({ fastify, code, phoneNumber }) {
 	await fastify.redis.sadd(code, phoneNumber);
+}
+
+function checkPhoneNumberFormat(phoneNumber) {
+	return phoneNumber.length <= 20;
 }
 
 module.exports = {
@@ -123,4 +127,5 @@ module.exports = {
 	createNewTransaction,
 	updateUserBalance,
 	addUserToRedis,
+	checkPhoneNumberFormat,
 };
