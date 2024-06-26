@@ -1,5 +1,2 @@
 testing
-readme
-ER dabatase model in readme as picture
-swagger
 deleted_at

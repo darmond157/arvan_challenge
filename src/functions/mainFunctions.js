@@ -26,7 +26,7 @@ async function hasUserUsedCodeBefore(fastify, code, phoneNumber) {
 
 async function doesUserExists({ fastify, phoneNumber }) {
 	const result = await fastify.pg.query(
-		"select * from users where phoneNumber=$1",
+		"select * from users where phoneNumber=$1 and deleted_at is null",
 		[phoneNumber]
 	);
 	return result.rowCount != 0 ? true : false;
@@ -38,7 +38,7 @@ function isFieldsProvided({ phoneNumber, code }) {
 
 async function doesCodeExistsInDb({ fastify, code }) {
 	const result = await fastify.pg.query(
-		"select * from chargeCodes where code=$1",
+		"select * from chargeCodes where code=$1 and deleted_at is null",
 		[code]
 	);
 	return result.rowCount;
@@ -65,7 +65,7 @@ function removeMessageFromChannel(channel, message) {
 
 async function getChargeCodeDetails(fastify, code) {
 	const result = await fastify.pg.query(
-		"select id as chargeCodeId,value from chargeCodes where code=$1",
+		"select id as chargeCodeId,value from chargeCodes where code=$1 and deleted_at is null",
 		[code]
 	);
 	return {

@@ -8,7 +8,7 @@ const {
 	getNumberOfCodeUsers,
 	sendDataToChargeCodesQueue,
 	checkPhoneNumberFormat,
-} = require("../../../utils.js");
+} = require("../../../functions/mainFunctions.js");
 
 function applyCode(fastify) {
 	return async (req, res) => {

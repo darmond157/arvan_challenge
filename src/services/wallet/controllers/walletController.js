@@ -12,7 +12,7 @@ function getWallet(fastify) {
 }
 
 function getSelectWalletQuery() {
-	return "SELECT userId,balance FROM wallets join users on wallets.userId=users.id WHERE users.phoneNumber=$1";
+	return "SELECT userId,balance FROM wallets join users on wallets.userId=users.id WHERE users.phoneNumber=$1 and wallets.deleted_at is null and users.deleted_at is null";
 }
 
 module.exports = { getWallet };

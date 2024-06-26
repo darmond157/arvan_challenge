@@ -17,7 +17,7 @@ async function createNewWallet(fastify, userId) {
 
 async function getUserId() {
 	const selectUserQueryResult = await fastify.pg.query(
-		"select id from users where phoneNumber=$1",
+		"select id from users where phoneNumber=$1 and deleted_at is null",
 		[phoneNumber]
 	);
 	return selectUserQueryResult.rows[0].id;
@@ -25,7 +25,7 @@ async function getUserId() {
 
 async function getWalletId(fastify, userId) {
 	const selectWalletQueryResult = await fastify.pg.query(
-		"select id from wallets where userId=$1",
+		"select id from wallets where userId=$1 and deleted_at is null",
 		[userId]
 	);
 	return selectWalletQueryResult.rows[0].id;
