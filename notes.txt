@@ -1,4 +1,5 @@
 testing
 readme
-ER database model in readme as picture
+ER dabatase model in readme as picture
 swagger
+deleted_at
