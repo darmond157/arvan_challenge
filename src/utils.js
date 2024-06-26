@@ -31,7 +31,8 @@ async function getUserIdAndWalletId({ fastify, phoneNumber }) {
 }
 
 async function hasUserUsedCodeBefore(fastify, code, phoneNumber) {
-	return (await fastify.redis.sismember(code, phoneNumber)) != 0 ? true : false;
+	const result = await fastify.redis.sismember(code, phoneNumber);
+	return result ? true : false;
 }
 
 async function doesUserExists({ fastify, phoneNumber }) {

@@ -17,24 +17,24 @@ module.exports = (fastify) => {
 		if (!isFieldsProvided(wholeArguments))
 			return res.send("phoneNumber or code is empty!");
 
-		const codeCountInDb = doesCodeExistsInDb(wholeArguments);
+		const codeCountInDb = await doesCodeExistsInDb(wholeArguments);
 		if (!codeCountInDb) return res.send("the code does not exists!");
 
-		if (getNumberOfCodeUsers(wholeArguments) == codeCountInDb)
+		if ((await getNumberOfCodeUsers(wholeArguments)) == codeCountInDb)
 			return res.send("Code is not valid anymore!");
 
 		let dataToSendToQueue;
-		if (doesUserExists(wholeArguments)) {
-			// if (hasUserUsedCodeBefore(wholeArguments))
-			// 	return res.send("you have used this code before!");
+		if (await doesUserExists(wholeArguments)) {
+			if (await hasUserUsedCodeBefore(fastify, code, phoneNumber))
+				return res.send("you have used this code before!");
 
-			const { userId, walletId } = getUserIdAndWalletId(wholeArguments);
+			const { userId, walletId } = await getUserIdAndWalletId(wholeArguments);
 			dataToSendToQueue = { userId, walletId, phoneNumber, code };
 		} else {
-			const { userId, walletId } = createNewUserAndWallet(wholeArguments);
+			const { userId, walletId } = await createNewUserAndWallet(wholeArguments);
 			dataToSendToQueue = { userId, walletId, phoneNumber, code };
 		}
 
-		sendDataToChargeCodesQueue(fastify, dataToSendToQueue);
+		await sendDataToChargeCodesQueue(fastify, dataToSendToQueue);
 	});
 };
