@@ -11,7 +11,7 @@ the wallet service hold responsibility of managing wallets and transactions and 
 ### how to run:
 
 + run ```npm install``` to install dependancies.
-+ run ```npm run dev``` for development mode and ```npm run production``` for production mode.
 + write a .env file like .env.example file.
++ run ```npm run dev``` for development mode and ```npm run production``` for production mode.
 
 + #### you can also run the project with ```docker compose up -d --build```
