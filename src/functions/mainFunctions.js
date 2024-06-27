@@ -44,6 +44,14 @@ async function doesCodeExistsInDb({ fastify, code }) {
 	return result.rowCount;
 }
 
+async function getCodeCountInDb({ fastify, code }) {
+	const result = await fastify.pg.query(
+		"select count from chargeCodes where code=$1 and deleted_at is null",
+		[code]
+	);
+	return result.rows[0].count;
+}
+
 async function getNumberOfCodeUsers({ fastify, code }) {
 	return await fastify.redis.scard(code);
 }
@@ -116,4 +124,5 @@ module.exports = {
 	updateUserBalance,
 	addUserToRedis,
 	checkPhoneNumberFormat,
+	getCodeCountInDb,
 };
