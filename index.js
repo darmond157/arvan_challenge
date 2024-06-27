@@ -7,8 +7,8 @@ require("./src/plugins/rabbitmq.js")(fastify)
 		require("./src/plugins/postgres.js")(fastify);
 	})
 	.then(() => {
-		require("./src/queue/queueInitializer.js")(fastify);
-		require("./src/queue/chargeCodeConsumer.js")(fastify);
+		require("./src/queues/queueInitializer.js")(fastify);
+		require("./src/queues/chargeCodeConsumer.js")(fastify);
 	})
 	.catch((err) => {
 		console.log(err);
