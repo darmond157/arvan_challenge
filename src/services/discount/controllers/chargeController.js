@@ -25,7 +25,10 @@ function applyCode(fastify) {
 		const doesCodeExists = await doesCodeExistsInDb(wholeArguments);
 		if (!doesCodeExists) return res.send("the code does not exists!");
 
-		if ((await getNumberOfCodeUsers(wholeArguments)) >= await getCodeCountInDb(wholeArguments))
+		if (
+			(await getNumberOfCodeUsers(wholeArguments)) >=
+			(await getCodeCountInDb(wholeArguments))
+		)
 			return res.send("Code is not valid anymore!");
 
 		let dataToSendToQueue;

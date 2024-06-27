@@ -7,7 +7,7 @@ const {
 	addUserToRedis,
 	removeMessageFromChannel,
 	getNumberOfCodeUsers,
-	doesCodeExistsInDb,
+	getCodeCountInDb,
 } = require("../functions/mainFunctions.js");
 
 module.exports = (fastify) => {
@@ -31,8 +31,8 @@ module.exports = (fastify) => {
 			return console.log("The code has been used before!");
 
 		if (
-			(await getNumberOfCodeUsers(wholeDataObject)) ==
-			(await doesCodeExistsInDb(wholeDataObject))
+			(await getNumberOfCodeUsers(wholeDataObject)) >=
+			(await getCodeCountInDb(wholeDataObject))
 		)
 			return console.log("Code is not valid anymore!");
 
