@@ -4,7 +4,7 @@
 the wallet service hold responsibility of managing wallets and transactions and discount service is responsible for managing codes, both charge codes and discount codes.
 
 #### database scheme:
-<img src="./assets/database.png" alt="database picture ..." title="database"/>
+<img src="./docs/database.png" alt="database picture ..." title="database"/>
 
 
 

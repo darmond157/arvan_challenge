@@ -16,21 +16,21 @@ function applyCode(fastify) {
 		const wholeArguments = { phoneNumber, code, fastify };
 
 		if (!checkPhoneNumberFormat(phoneNumber))
-			return res.send("phoneNumber is invalid!");
+			return res.code(400).send("phoneNumber is invalid!");
 
 		if (!isFieldsProvided(wholeArguments))
-			return res.send("phoneNumber or code is empty!");
+			return res.code(400).send("phoneNumber or code is empty!");
 
 		const codeCountInDb = await doesCodeExistsInDb(wholeArguments);
-		if (!codeCountInDb) return res.send("the code does not exists!");
+		if (!codeCountInDb) return res.code(500).send("the code does not exists!");
 
 		if ((await getNumberOfCodeUsers(wholeArguments)) >= codeCountInDb)
-			return res.send("Code is not valid anymore!");
+			return res.code(500).send("Code is not valid anymore!");
 
 		let dataToSendToQueue;
 		if (await doesUserExists(wholeArguments)) {
 			if (await hasUserUsedCodeBefore(fastify, code, phoneNumber))
-				return res.send("you have used this code before!");
+				return res.code(500).send("you have used this code before!");
 
 			const { userId, walletId } = await getUserIdAndWalletId(wholeArguments);
 			dataToSendToQueue = { userId, walletId, phoneNumber, code };
