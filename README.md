@@ -3,6 +3,9 @@
 #### generally, this project includes 2 services: wallet and discount.
 the wallet service hold responsibility of managing wallets and transactions and discount service is responsible for managing codes, both charge codes and discount codes.
 
+#### system architecture scheme:
+<img src="./docs/arvan_challenge_architecture.png" alt="architecture ..." title="architecture"/>
+
 #### database scheme:
 <img src="./docs/database.png" alt="database picture ..." title="database"/>
 
