@@ -9,7 +9,8 @@ the wallet service hold responsibility of managing wallets and transactions and 
 #### database scheme:
 <img src="./docs/database.png" alt="database picture ..." title="database"/>
 
-
+#### Apis:
+you can find Apis in docs folder and see swagger file.
 
 ### how to run:
 
