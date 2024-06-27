@@ -45,7 +45,7 @@ async function doesCodeExistsInDb({ fastify, code }) {
 }
 
 async function getNumberOfCodeUsers({ fastify, code }) {
-	await fastify.redis.scard(code);
+	return await fastify.redis.scard(code);
 }
 
 async function sendDataToChargeCodesQueue(fastify, data) {

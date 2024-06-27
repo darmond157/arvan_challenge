@@ -24,7 +24,7 @@ function applyCode(fastify) {
 		const codeCountInDb = await doesCodeExistsInDb(wholeArguments);
 		if (!codeCountInDb) return res.send("the code does not exists!");
 
-		if ((await getNumberOfCodeUsers(wholeArguments)) == codeCountInDb)
+		if ((await getNumberOfCodeUsers(wholeArguments)) >= codeCountInDb)
 			return res.send("Code is not valid anymore!");
 
 		let dataToSendToQueue;
@@ -45,4 +45,12 @@ function applyCode(fastify) {
 	};
 }
 
-module.exports = { applyCode };
+function codeUsersLog(fastify) {
+	return async (req, res) => {
+		const code = req.params?.code;
+		const usersLogs = await fastify.redis.smembers(code);
+		res.send(usersLogs);
+	};
+}
+
+module.exports = { applyCode, codeUsersLog };

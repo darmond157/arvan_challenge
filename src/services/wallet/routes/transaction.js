@@ -1,5 +1,5 @@
 const { getTransaction } = require("../controllers/transactionController.js");
 
 module.exports = (fastify) => {
-	fastify.get("/transaction/:phoneNumber", getTransaction(fastify));
+	fastify.get("/transactions/:phoneNumber", getTransaction(fastify));
 };
