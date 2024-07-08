@@ -5,10 +5,10 @@ module.exports = (fastify) => {
 				connectionString: process.env.POSTGRES_URL,
 			})
 			.after((err) => {
-				if (err) rej(err);
+				if (err) return rej(err);
 
 				console.log("connected to postgres ...");
-				res();
+				return res();
 			});
 	});
 };

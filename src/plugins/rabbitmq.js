@@ -7,10 +7,10 @@ module.exports = (fastify) => {
 				useRegularChannel: true,
 			})
 			.after((err) => {
-				if (err) rej(err);
+				if (err) return rej(err);
 				
 				console.log("connected to rabbit ...");
-				res();
+				return res();
 			});
 	});
 };

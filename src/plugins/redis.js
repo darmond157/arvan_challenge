@@ -6,7 +6,7 @@ module.exports = (fastify) => {
 				if (err) rej(err);
 				
 				console.log("connected to redis ...");
-				res();
+				return res();
 			});
 	});
 };
