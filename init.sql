@@ -1,6 +1,6 @@
 CREATE DATABASE arvan_challenge;
 
-\ c arvan_challenge;
+\c arvan_challenge;
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
@@ -54,19 +54,19 @@ CREATE TABLE transactions(
 insert into
     users (phoneNumber)
 values
-    ('123');
+    ('phone1');
 
 insert into
     wallets (userId, balance)
 values
-    (1, 3000);
+    (1, 5000);
 
 insert into
     chargeCodes (code, value, count)
 values
-    ('test1', 10, 1000);
+    ('chargeCode1', 2000, 100);
 
 insert into
     chargeCodes (code, value, count)
 values
-    ('test2', 1000, 5);
+    ('chargeCode2', 3000, 10);
