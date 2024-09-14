@@ -1,8 +1,30 @@
 version: "3.2"
 services:
-  arvan_challenge:
+  charge_code:
     build: .
-    container_name: "arvan_challenge_container"
+    container_name: "charge_code_container"
+    ports:
+      - 5000:5000
+    networks:
+      - arvan_challenge_network
+    environment:
+      - PORT=5000
+      - HOST=0.0.0.0
+      - RABBITMQ_URL=amqp://root:root@rabbitmq:5672
+      - POSTGRES_URL=postgres://postgres:secret@postgres/arvan_challenge
+      - REDIS_URL=redis://default:secret@redis:6379
+      - LOGGER=true
+      - WALLET_SERVICE_URL=http://localhost:3000
+      - TRANSACTION_SERVICE_URL=http://localhost:4000
+
+    depends_on:
+      - rabbitmq
+      - database
+      - redis
+
+  wallet:
+    build: .
+    container_name: "wallet_container"
     ports:
       - 3000:3000
     networks:
@@ -19,9 +41,28 @@ services:
       - database
       - redis
 
+  transaction:
+    build: .
+    container_name: "transaction_container"
+    ports:
+      - 4000:4000
+    networks:
+      - arvan_challenge_network
+    environment:
+      - PORT=4000
+      - HOST=0.0.0.0
+      - RABBITMQ_URL=amqp://root:root@rabbitmq:5672
+      - POSTGRES_URL=postgres://postgres:secret@postgres/arvan_challenge
+      - REDIS_URL=redis://default:secret@redis:6379
+      - LOGGER=true
+    depends_on:
+      - rabbitmq
+      - database
+      - redis
+
   rabbitmq:
     image: docker.arvancloud.ir/rabbitmq:latest
-    container_name: "rabbit_container"
+    container_name: "rabbitmq_container"
     environment:
       - RABBITMQ_DEFAULT_USER=root
       - RABBITMQ_DEFAULT_PASS=root
@@ -33,7 +74,7 @@ services:
 
   postgres:
     image: docker.arvancloud.ir/postgres:16-alpine
-    container_name: postgres_container
+    container_name: postgresql_container
     ports:
       - 5432:5432
     environment:
