@@ -1,10 +1,10 @@
 module.exports = (port, host) => {
 	const fastify = require("fastify")({ logger: process.env.LOGGER });
 
-	require("./src/plugins/rabbitmq")(fastify)
+	require("./src/plugins/rabbitmq.js")(fastify)
 		.then(() => {
-			require("./src/plugins/redis")(fastify);
-			require("./src/plugins/postgres")(fastify);
+			require("./src/plugins/redis.js")(fastify);
+			require("./src/plugins/postgres.js")(fastify);
 		})
 		.then(() => {
 			require("./src/queues/consumers/chargeCodeConsumer.js")(fastify);
