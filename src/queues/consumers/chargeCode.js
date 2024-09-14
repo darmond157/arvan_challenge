@@ -8,7 +8,7 @@ const {
 	removeMessageFromChannel,
 	getNumberOfCodeUsers,
 	getCodeCountInDb,
-} = require("../functions/mainFunctions.js");
+} = require("../../functions/mainFunctions.js");
 
 module.exports = (fastify) => {
 	const channel = fastify.amqp.channel;
