@@ -1,0 +1,21 @@
+POST http://localhost:3000/chargeCode/applyCode
+Content-Type: application/json
+
+{
+    "phoneNumber":"phone11",
+    "code":"chargeCode2"
+}
+
+###
+
+GET http://localhost:3000/chargeCode/codeUsersLog/chargeCode2
+
+###
+
+GET http://localhost:3000/wallet/phone1
+
+###
+
+GET http://localhost:3000/transactions/phone1
+
+###

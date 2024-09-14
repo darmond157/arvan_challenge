@@ -19,9 +19,6 @@ function applyCode(fastify) {
 		if (!checkPhoneNumberFormat(phoneNumber))
 			return res.send("phoneNumber is invalid!");
 
-		if (!isFieldsProvided(wholeArguments))
-			return res.send("phoneNumber or code is empty!");
-
 		const doesCodeExists = await doesCodeExistsInDb(wholeArguments);
 		if (!doesCodeExists) return res.send("the code does not exists!");
 
