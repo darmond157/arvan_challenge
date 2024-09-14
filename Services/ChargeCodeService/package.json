@@ -1,12 +1,12 @@
 {
   "scripts": {
     "dev": "nodemon index.js",
-    "production": "node index.js",
     "test": "jest"
   },
   "dependencies": {
     "@fastify/postgres": "^5.2.2",
     "@fastify/redis": "^6.2.0",
+    "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.0",
     "fastify-amqp-async": "^1.0.1",

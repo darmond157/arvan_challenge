@@ -1,27 +1,13 @@
-const {
-	createNewUser,
-	createNewWallet,
-	getUserId,
-	getWalletId,
-} = require("./helperFunctions");
+const axios = require("axios");
 
-async function createNewUserAndWallet({ fastify, phoneNumber }) {
-	const userId = await createNewUser(fastify, phoneNumber);
-	const walletId = await createNewWallet(fastify, userId);
-
-	return { walletId, userId };
+async function createNewUserAndWallet() {
+	axios.post
 }
 
-async function getUserIdAndWalletId({ fastify, phoneNumber }) {
-	const userId = await getUserId(fastify, phoneNumber);
-	const walletId = await getWalletId(fastify, userId);
+async function getUserIdAndWalletId() {}
 
-	return { userId, walletId };
-}
-
-async function hasUserUsedCodeBefore(fastify, code, phoneNumber) {
-	const result = await fastify.redis.sismember(code, phoneNumber);
-	return result ? true : false;
+async function hasUserUsedCodeBefore({ fastify, code, phoneNumber }) {
+	return await fastify.redis.sismember(code, phoneNumber);
 }
 
 async function doesUserExists({ fastify, phoneNumber }) {
@@ -29,11 +15,7 @@ async function doesUserExists({ fastify, phoneNumber }) {
 		"select * from users where phoneNumber=$1 and deleted_at is null",
 		[phoneNumber]
 	);
-	return result.rowCount != 0 ? true : false;
-}
-
-function isFieldsProvided({ phoneNumber, code }) {
-	return phoneNumber && code;
+	return result.rowCount != 0;
 }
 
 async function doesCodeExistsInDb({ fastify, code }) {
@@ -82,30 +64,12 @@ async function getChargeCodeDetails(fastify, code) {
 	};
 }
 
-async function createNewTransaction({
-	fastify,
-	chargeCodeId,
-	value,
-	walletId,
-	userId,
-}) {
-	await fastify.pg.query(
-		"insert into transactions (userId,walletId,chargeCodeId,value) values ($1,$2,$3,$4)",
-		[userId, walletId, chargeCodeId, value]
-	);
-}
-async function updateUserBalance({ fastify, walletId, value }) {
-	await fastify.pg.query("update wallets set balance=balance+$1 where id=$2", [
-		value,
-		walletId,
-	]);
-}
+async function createNewTransaction() {}
+
+async function updateUserBalance() {}
+
 async function addUserToRedis({ fastify, code, phoneNumber }) {
 	await fastify.redis.sadd(code, phoneNumber);
-}
-
-function checkPhoneNumberFormat(phoneNumber) {
-	return phoneNumber.length <= 20;
 }
 
 module.exports = {
@@ -113,7 +77,6 @@ module.exports = {
 	getUserIdAndWalletId,
 	hasUserUsedCodeBefore,
 	doesUserExists,
-	isFieldsProvided,
 	doesCodeExistsInDb,
 	getNumberOfCodeUsers,
 	sendDataToChargeCodesQueue,
@@ -123,6 +86,5 @@ module.exports = {
 	createNewTransaction,
 	updateUserBalance,
 	addUserToRedis,
-	checkPhoneNumberFormat,
 	getCodeCountInDb,
 };
