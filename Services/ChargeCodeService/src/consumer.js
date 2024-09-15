@@ -1,15 +1,3 @@
-const {
-	parseQueueMessage,
-	getChargeCodeDetails,
-	hasUserUsedCodeBefore,
-	createNewTransaction,
-	updateUserBalance,
-	addUserToRedis,
-	removeMessageFromChannel,
-	getNumberOfCodeUsers,
-	getCodeCountInDb,
-} = require("./functions/mainFunctions.js");
-
 module.exports = (fastify) => {
 	const channel = fastify.amqp.channel;
 

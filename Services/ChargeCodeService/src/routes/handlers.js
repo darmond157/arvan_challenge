@@ -7,7 +7,7 @@ const {
 	getCodeCountInDb,
 	getNumberOfCodeUsers,
 	sendDataToChargeCodesQueue,
-} = require("./utils.js");
+} = require("../utils/postgres.js");
 
 function sendCodeToQueue(fastify) {
 	return async (req, res) => {
