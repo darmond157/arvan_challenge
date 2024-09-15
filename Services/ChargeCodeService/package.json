@@ -1,8 +1,4 @@
 {
-  "scripts": {
-    "dev": "nodemon index.js",
-    "test": "jest"
-  },
   "dependencies": {
     "@fastify/postgres": "^5.2.2",
     "@fastify/redis": "^6.2.0",

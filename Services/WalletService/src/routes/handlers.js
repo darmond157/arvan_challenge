@@ -1,4 +1,4 @@
-async function createNewUserAndWallet(fastify) {
+function createNewUserAndWallet(fastify) {
 	return async (req, res) => {
 		const { phoneNumber } = req.body;
 
@@ -25,7 +25,7 @@ async function createNewUserAndWallet(fastify) {
 	}
 }
 
-async function getUserAndWallet(fastify) {
+function getUserAndWallet(fastify) {
 	return async (req, res) => {
 		const { phoneNumber } = req.params;
 

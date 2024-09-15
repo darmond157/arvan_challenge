@@ -1,13 +1,15 @@
 const {
-	createNewUserAndWallet,
-	getUserIdAndWalletId,
+	getNumberOfCodeUsers,
 	hasUserUsedCodeBefore,
+} = require("../functions/redis");
+
+const { sendDataToChargeCodesQueue } = require("../functions/rabbitmq");
+
+const {
 	doesUserExists,
 	doesCodeExistsInDb,
 	getCodeCountInDb,
-	getNumberOfCodeUsers,
-	sendDataToChargeCodesQueue,
-} = require("../utils/postgres.js");
+} = require("../functions/postgres");
 
 function sendCodeToQueue(fastify) {
 	return async (req, res) => {
