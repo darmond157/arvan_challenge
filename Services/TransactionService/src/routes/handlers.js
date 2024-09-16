@@ -1,4 +1,4 @@
-async function createNewTransaction(fastify) {
+function createNewTransaction(fastify) {
 	return async (req, res) => {
 		try {
 			const { chargeCodeId, value, walletId, userId } = req.body;
