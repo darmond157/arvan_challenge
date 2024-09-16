@@ -10,16 +10,15 @@ services:
     environment:
       - PORT=5000
       - HOST=0.0.0.0
-      - RABBITMQ_URL=amqp://root:root@rabbitmq:5672
-      - POSTGRES_URL=postgres://postgres:secret@postgres/arvan_challenge
-      - REDIS_URL=redis://default:secret@redis:6379
+      - RABBITMQ_URL=amqp://root:root@rabbitmq_container:5672
+      - POSTGRES_URL=postgres://postgres:secret@postgres_container/arvan_challenge
+      - REDIS_URL=redis://default:secret@redis_container:6379
       - LOGGER=true
       - WALLET_SERVICE_URL=http://localhost:3000
       - TRANSACTION_SERVICE_URL=http://localhost:4000
-
     depends_on:
       - rabbitmq
-      - database
+      - postgres
       - redis
 
   wallet:
@@ -37,9 +36,7 @@ services:
       - REDIS_URL=redis://default:secret@redis:6379
       - LOGGER=true
     depends_on:
-      - rabbitmq
-      - database
-      - redis
+      - postgres
 
   transaction:
     build: .
@@ -56,12 +53,10 @@ services:
       - REDIS_URL=redis://default:secret@redis:6379
       - LOGGER=true
     depends_on:
-      - rabbitmq
-      - database
-      - redis
+      - postgres
 
   rabbitmq:
-    image: docker.arvancloud.ir/rabbitmq:latest
+    image: docker.arvancloud.ir/rabbitmq:3-management
     container_name: "rabbitmq_container"
     environment:
       - RABBITMQ_DEFAULT_USER=root

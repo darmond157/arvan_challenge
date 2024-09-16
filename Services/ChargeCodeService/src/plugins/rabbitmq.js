@@ -5,12 +5,12 @@ module.exports = async (fastify) => {
 		useRegularChannel: true,
 	});
 
-	fastify.after((err) => {
+	fastify.after(async (err) => {
 		if (err) process.exit(0);
-
+		
 		console.log("connected to rabbitmq ...");
-	});
 
-	const channel = fastify.amqp.channel;
-	await channel.assertQueue("charge-codes-Q", { durable: true });
+		const channel = fastify.amqp.channel;
+		await channel.assertQueue("charge-codes-Q", { durable: true });
+	});
 };

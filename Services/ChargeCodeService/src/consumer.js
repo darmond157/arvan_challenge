@@ -1,7 +1,6 @@
 module.exports = (fastify) => {
 	try {
 		const channel = fastify.amqp.channel;
-
 		channel.consume("charge-codes-Q", async (message) => {
 			const { code, phoneNumber, walletId, userId } =
 				parseQueueMessage(message);
@@ -33,6 +32,8 @@ module.exports = (fastify) => {
 			removeMessageFromChannel(channel, message);
 		});
 	} catch (err) {
+		console.log(err);
+
 		process.exit(0);
 	}
 };
