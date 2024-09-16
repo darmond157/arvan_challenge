@@ -8,6 +8,8 @@ function createNewTransaction(fastify) {
 			);
 			res.send("ok");
 		} catch (err) {
+			console.log(err);
+
 			process.exit(0);
 		}
 	};

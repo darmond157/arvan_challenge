@@ -4,7 +4,10 @@ module.exports = (fastify) => {
 			connectionString: process.env.POSTGRES_URL,
 		})
 		.after((err) => {
-			if (err) process.exit(0);
+			if (err) {
+				console.log(err);
+				process.exit(0);
+			}
 
 			console.log("connected to postgres ...");
 		});
