@@ -1,9 +1,0 @@
-.env
-.env.example
-.gitkeep
-req.http
-.gitignore
-Dockerfile
-docker-compose.yaml
-README.md
-docs
